@@ -4,11 +4,12 @@ Vue3 Quasar Firebase Typescript Community Project
 
 ### Key Skills
 
-- View : Vue3, Vite
+- View : Vue3
+- Build Tool : Vite
 - UI Framework : Quasar
 - Javascript : ES6, Typescript
 - State Management : Pinia
-- Back-End : Firebase
+- Database : Firebase
 - Coding Convention : ESLint, Prettier
 
 ### Customize the configuration
