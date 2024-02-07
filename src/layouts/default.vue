@@ -34,23 +34,34 @@
           target="_blank"
         />
         <q-separator class="q-my-md q-mr-md" vertical />
-        <q-btn unlevated rounded color="primary" label="로그인 / 회원가입" />
+        <q-btn
+          unlevated
+          rounded
+          color="primary"
+          label="로그인 / 회원가입"
+          @click="openAuthDialog"
+        />
       </q-toolbar>
     </q-header>
 
     <q-page-container :style="pageContainerStyles">
       <router-view />
     </q-page-container>
+    <AuthDialog v-model="authDialog" />
   </q-layout>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import AuthDialog from 'src/components/auth/AuthDialog.vue';
 
 const route = useRoute();
 const pageContainerStyles = computed(() => ({
   maxWidth: route.meta?.width || '1080px',
   margin: '0 auto',
 }));
+
+const authDialog = ref(false);
+const openAuthDialog = () => (authDialog.value = true);
 </script>
