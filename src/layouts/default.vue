@@ -47,6 +47,7 @@
     <q-page-container :style="pageContainerStyles">
       <router-view />
     </q-page-container>
+
     <AuthDialog v-model="authDialog" />
   </q-layout>
 </template>

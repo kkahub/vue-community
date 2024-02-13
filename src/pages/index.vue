@@ -1,14 +1,38 @@
 <template>
   <q-page padding>
-    <div class="text-h4">커뮤니티 목록</div>
-    <section class="q-gutter-y-sm q-mt-lg">
-      <q-card v-for="id in 100" :key="id">
-        <router-link :to="`/posts/${id}`">
-          <q-card-section>{{ id }}번 게시글</q-card-section>
-        </router-link>
-      </q-card>
-    </section>
+    <div class="row q-col-gutter-x-lg">
+      <PostLeftBar class="col-grow" />
+      <section class="col-7">
+        <PostHeader />
+        <PostList :items="posts" />
+      </section>
+      <PostRightBar class="col-3" />
+    </div>
   </q-page>
 </template>
+
+<script setup>
+import { useRouter } from 'vue-router';
+import PostList from 'src/components/apps/post/PostList.vue';
+import PostHeader from './components/PostHeader.vue';
+import PostLeftBar from './components/PostLeftBar.vue';
+import PostRightBar from './components/PostRightBar.vue';
+
+const router = useRouter();
+
+const posts = Array.from(Array(20), (_, index) => ({
+  id: index,
+  title: 'Vue3 Firebase 강의 ' + index,
+  content:
+    'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo esse assumenda nostrum quaerat aut quasi voluptate. Ratione error blanditiis excepturi? Dolorum quod officiis aperiam eligendi voluptatem sapiente provident a asperiores.',
+  readCount: 1,
+  commentCount: 2,
+  likeCount: 3,
+  bookmarkCount: 4,
+  category: '카테고리 ' + index,
+  tags: ['html', 'css', 'javascript'],
+  uid: 'uid',
+}));
+</script>
 
 <style lang="scss" scoped></style>
