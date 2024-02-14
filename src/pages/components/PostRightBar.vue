@@ -6,6 +6,7 @@
       color="primary"
       text-color="white"
       class="full-width"
+      @click="$emit('openWriteDialog')"
     >
       <q-avatar class="q-mr-sm" color="white" text-color="primary" size="22px">
         <q-icon name="edit" size="14px"></q-icon>
@@ -15,7 +16,7 @@
     <q-card class="q-mt-md bg-grey-1" bordered flat>
       <q-card-section class="flex items-center q-pb-none">
         <div class="text-weight-bold">태그</div>
-        <q-sapce />
+        <q-space />
         <q-btn icon="refresh" size="sm" dense flat round color="grey" />
       </q-card-section>
       <q-card-section class="q-pb-sm">
@@ -68,6 +69,8 @@
 <script setup>
 import StickySideBar from 'src/components/StickySideBar.vue';
 import { ref } from 'vue';
+
+defineEmits(['openWriteDialog']);
 
 const tags = ref([
   { name: 'vuejs', count: 10 },

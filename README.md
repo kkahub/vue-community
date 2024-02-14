@@ -1,4 +1,4 @@
-# Vue3 Quasar App (vue3-quasar-app)
+# Vue3 Firebase App (vue3-firebase-app)
 
 Vue3 Quasar Firebase Typescript Community Project
 

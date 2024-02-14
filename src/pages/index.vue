@@ -6,22 +6,23 @@
         <PostHeader />
         <PostList :items="posts" />
       </section>
-      <PostRightBar class="col-3" />
+      <PostRightBar class="col-3" @open-write-dialog="openWriteDialog" />
     </div>
+
+    <PostWriteDialog v-model="postDialog" />
   </q-page>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
-import PostList from 'src/components/apps/post/PostList.vue';
+import { ref } from 'vue';
 import PostHeader from './components/PostHeader.vue';
+import PostList from 'src/components/apps/post/PostList.vue';
 import PostLeftBar from './components/PostLeftBar.vue';
 import PostRightBar from './components/PostRightBar.vue';
-
-const router = useRouter();
+import PostWriteDialog from 'src/components/apps/post/PostWriteDialog.vue';
 
 const posts = Array.from(Array(20), (_, index) => ({
-  id: index,
+  id: 'A' + index,
   title: 'Vue3 Firebase 강의 ' + index,
   content:
     'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo esse assumenda nostrum quaerat aut quasi voluptate. Ratione error blanditiis excepturi? Dolorum quod officiis aperiam eligendi voluptatem sapiente provident a asperiores.',
@@ -33,6 +34,11 @@ const posts = Array.from(Array(20), (_, index) => ({
   tags: ['html', 'css', 'javascript'],
   uid: 'uid',
 }));
+
+const postDialog = ref(false);
+const openWriteDialog = () => {
+  postDialog.value = true;
+};
 </script>
 
 <style lang="scss" scoped></style>

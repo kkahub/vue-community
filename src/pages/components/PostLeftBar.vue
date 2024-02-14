@@ -15,11 +15,7 @@
 
 <script setup>
 import StickySideBar from 'src/components/StickySideBar.vue';
+import { getCategories } from 'src/services/category';
 
-const categories = [
-  { label: 'Q&A', value: 'qna' },
-  { label: '커뮤니티', value: 'community' },
-  { label: '공지사항', value: 'notice' },
-  { label: '강의', value: 'lecture' },
-];
+const categories = getCategories();
 </script>

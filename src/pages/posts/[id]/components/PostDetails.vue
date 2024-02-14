@@ -1,5 +1,5 @@
 <template>
-  <q-card class="q-pa-lg">
+  <BaseCard class="q-pa-lg">
     <div class="flex q-mb-md">
       <q-btn
         icon="sym_o_arrow_back"
@@ -27,7 +27,11 @@
       <q-btn icon="more_horiz" round flat>
         <q-menu>
           <q-list style="min-width: 100px">
-            <q-item clickable v-close-popup>
+            <q-item
+              clickable
+              v-close-popup
+              :to="`/posts/${$route.params.id}/edit`"
+            >
               <q-item-section>수정하기</q-item-section>
             </q-item>
             <q-item clickable v-close-popup>
@@ -62,11 +66,12 @@
       similique praesentium quibusdam repudiandae assumenda accusantium totam
       necessitatibus maxime libero cumque ratione est dolor non et corporis.
     </div>
-  </q-card>
+  </BaseCard>
 </template>
 
 <script setup>
 import PostIcon from 'src/components/apps/post/PostIcon.vue';
+import BaseCard from 'src/components/base/BaseCard.vue';
 </script>
 
 <style lang="scss" scoped></style>
