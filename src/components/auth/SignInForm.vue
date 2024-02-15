@@ -1,11 +1,23 @@
 <template>
   <div>
     <div class="text-h5 text-center text-weight-bold q-mb-xl">로그인</div>
-    <q-from class="q-gutter-y-md">
-      <q-input placeholder="이메일" outlined dense />
-      <q-input placeholder="비밀번호" outlined dense />
+    <q-form class="q-gutter-y-md" @submit="handleSignInEmail">
+      <q-input v-model="form.email" placeholder="이메일" outlined dense />
+      <q-input
+        v-model="form.password"
+        type="password"
+        placeholder="비밀번호"
+        outlined
+        dense
+      />
       <div>
-        <q-btn label="로그인" class="full-width" unelevated color="primary" />
+        <q-btn
+          type="submit"
+          label="로그인"
+          class="full-width"
+          unelevated
+          color="primary"
+        />
         <div class="flex justify-between">
           <q-btn
             label="비밀번호 찾기"
@@ -32,13 +44,40 @@
         unelevated
         color="primary"
         outline
+        @click="handleSignInGoogle"
       />
-    </q-from>
+    </q-form>
   </div>
 </template>
 
 <script setup>
-defineEmits(['changeView']);
+import { ref } from 'vue';
+import { useQuasar } from 'quasar';
+
+import { signInWithGoogle, signInWithEmail } from 'src/services/auth';
+
+const emit = defineEmits(['changeView', 'closeDialog']);
+
+const $q = useQuasar();
+
+// 이메일 로그인
+const form = ref({
+  email: '',
+  password: '',
+});
+
+const handleSignInEmail = async () => {
+  await signInWithEmail(form.value);
+  $q.notify('환영합니다 :)');
+  emit('closeDialog');
+};
+
+// 로그인 (구글)
+const handleSignInGoogle = async () => {
+  await signInWithGoogle();
+  $q.notify('환영합니다 ;)');
+  emit('closeDialog');
+};
 </script>
 
 <style lang="scss" scoped></style>
