@@ -1,10 +1,9 @@
 # Vue3 Firebase App (vue3-firebase-app)
 
 Vue3 Quasar Firebase Typescript Community Project
+<br/><br/>
 
 ## Key Skills
-
----
 
 - **View** : Vue3
 - **Build Tool** : Vite
@@ -15,8 +14,6 @@ Vue3 Quasar Firebase Typescript Community Project
 - **Coding Convention** : ESLint, Prettier
 
 ## library
-
----
 
 ### unplugin-vue-router
 
@@ -43,9 +40,8 @@ Vue3 Quasar Firebase Typescript Community Project
 [VueUse](https://vueuse.org/)
 
 - 유용한 컴포저블 모음
+  <br/><br/>
 
 ## Customize the configuration
-
----
 
 See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
