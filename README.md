@@ -1,6 +1,7 @@
 # Vue3 Firebase App (vue3-firebase-app)
 
 Vue3 Quasar Firebase Typescript Community Project
+
 <br/><br/>
 
 ## Key Skills
@@ -12,6 +13,8 @@ Vue3 Quasar Firebase Typescript Community Project
 - **State Management** : Pinia
 - **Database** : Firebase
 - **Coding Convention** : ESLint, Prettier
+
+  <br/><br/>
 
 ## library
 
@@ -40,6 +43,7 @@ Vue3 Quasar Firebase Typescript Community Project
 [VueUse](https://vueuse.org/)
 
 - 유용한 컴포저블 모음
+
   <br/><br/>
 
 ## Customize the configuration
