@@ -21,7 +21,13 @@
       <q-separator />
       <q-card-actions>
         <q-space />
-        <q-btn type="submit" label="저장하기" flat color="primary" />
+        <q-btn
+          type="submit"
+          label="저장하기"
+          flat
+          color="primary"
+          :loading="isLoading"
+        />
       </q-card-actions>
     </q-form>
   </BaseCard>
@@ -30,22 +36,40 @@
 <script setup>
 import { useQuasar } from 'quasar';
 import BaseCard from 'src/components/base/BaseCard.vue';
+import { useAsyncState } from '@vueuse/core';
 import { updateUserPassword } from 'src/services';
 import { ref } from 'vue';
+import { getErrorMessage } from 'src/utils/firebase/error-message';
 
 const $q = useQuasar();
+
+const { isLoading, execute } = useAsyncState(updateUserPassword, null, {
+  immediate: false,
+  throwError: true,
+  onSuccess: () => {
+    $q.notify('비밀번호가 변경되었습니다.');
+    form.value.newPassword = '';
+    form.value.newPasswordConfirm = '';
+  },
+  onError: err => {
+    $q.notify({
+      type: 'negative',
+      message: getErrorMessage(err.code),
+    });
+  },
+});
 
 const form = ref({
   newPassword: '',
   newPasswordConfirm: '',
 });
-
-const handleSubmit = async () => {
-  await updateUserPassword(form.value.newPassword);
-  $q.notify('비밀번호가 변경되었습니다.');
-  form.value.newPassword = '';
-  form.value.newPasswordConfirm = '';
-};
+const handleSubmit = () => execute(0, form.value.newPassword);
+// const handleSubmit = async () => {
+//   await updateUserPassword(form.value.newPassword);
+//   $q.notify('비밀번호가 변경되었습니다.');
+//   form.value.newPassword = '';
+//   form.value.newPasswordConfirm = '';
+// };
 </script>
 
 <style lang="scss" scoped></style>
