@@ -11,6 +11,8 @@
         v-model:title="form.title"
         v-model:category="form.category"
         v-model:content="form.content"
+        v-model:tags="form.tags"
+        @submit.prevent
       >
         <template #actions>
           <q-btn flat label="취소" v-close-popup />

@@ -1,12 +1,16 @@
 <template>
   <q-page padding>
     <div class="row q-col-gutter-x-lg">
-      <PostLeftBar class="col-grow" />
+      <PostLeftBar class="col-grow" v-model:category="params.category" />
       <section class="col-7">
         <PostHeader />
         <PostList :items="posts" />
       </section>
-      <PostRightBar class="col-3" @open-write-dialog="openWriteDialog" />
+      <PostRightBar
+        class="col-3"
+        v-model:tags="params.tags"
+        @open-write-dialog="openWriteDialog"
+      />
     </div>
 
     <PostWriteDialog v-model="postDialog" />
@@ -14,26 +18,36 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import { getPosts } from 'src/services';
+import { executeTransition, useAsyncState } from '@vueuse/core';
+
 import PostHeader from './components/PostHeader.vue';
 import PostList from 'src/components/apps/post/PostList.vue';
 import PostLeftBar from './components/PostLeftBar.vue';
 import PostRightBar from './components/PostRightBar.vue';
 import PostWriteDialog from 'src/components/apps/post/PostWriteDialog.vue';
 
-const posts = Array.from(Array(20), (_, index) => ({
-  id: 'A' + index,
-  title: 'Vue3 Firebase 강의 ' + index,
-  content:
-    'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo esse assumenda nostrum quaerat aut quasi voluptate. Ratione error blanditiis excepturi? Dolorum quod officiis aperiam eligendi voluptatem sapiente provident a asperiores.',
-  readCount: 1,
-  commentCount: 2,
-  likeCount: 3,
-  bookmarkCount: 4,
-  category: '카테고리 ' + index,
-  tags: ['html', 'css', 'javascript'],
-  uid: 'uid',
-}));
+const router = useRouter();
+const params = ref({
+  category: null,
+  tags: [],
+});
+
+const { state: posts, execute } = useAsyncState(getPosts, [], {
+  throwError: true,
+});
+
+watch(
+  params,
+  () => {
+    execute(0, params.value);
+  },
+  {
+    deep: true,
+  },
+);
 
 const postDialog = ref(false);
 const openWriteDialog = () => {
