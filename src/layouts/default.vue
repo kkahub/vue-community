@@ -52,7 +52,7 @@
             />
           </q-avatar>
           <q-menu>
-            <q-list style="min-width: 140px">
+            <q-list style="min-width: 180px">
               <q-item
                 v-if="authStore.user.emailVerified"
                 clickable

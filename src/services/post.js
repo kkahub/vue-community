@@ -8,6 +8,8 @@ import {
   getDocs,
   query,
   where,
+  orderBy,
+  getDoc,
 } from 'firebase/firestore';
 
 export async function createPost(data) {
@@ -59,14 +61,18 @@ export async function getPosts(params) {
   // console.log(posts);
 
   // 1) 컬렉션에 있는 문서를 쿼리해서 조회
-  const condition = [];
+  const conditions = [];
   if (params?.category) {
-    condition.push(where('category', '==', params.category));
+    conditions.push(where('category', '==', params.category));
   }
   if (params?.tags && params?.tags.length > 0) {
-    condition.push(where('tags', 'array-contains-any', params?.tags));
+    conditions.push(where('tags', 'array-contains-any', params?.tags));
   }
-  const q = query(collection(db, 'posts'), ...condition);
+  if (params?.sort) {
+    conditions.push(orderBy(params.sort, 'desc'));
+  }
+
+  const q = query(collection(db, 'posts'), ...conditions);
   const querySnapshot = await getDocs(q);
   const posts = querySnapshot.docs.map(docs => {
     const data = docs.data();
@@ -77,4 +83,19 @@ export async function getPosts(params) {
     };
   });
   return posts;
+}
+
+export async function getPost(id) {
+  const docSnap = await getDoc(doc(db, 'posts', id));
+
+  if (!docSnap.exists()) {
+    throw new Error('No such document!');
+  }
+
+  const data = docSnap.data();
+
+  return {
+    ...data,
+    createdAt: data.createdAt?.toDate(),
+  };
 }
