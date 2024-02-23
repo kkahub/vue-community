@@ -10,6 +10,8 @@ import {
   where,
   orderBy,
   getDoc,
+  updateDoc,
+  deleteDoc,
 } from 'firebase/firestore';
 
 export async function createPost(data) {
@@ -98,4 +100,15 @@ export async function getPost(id) {
     ...data,
     createdAt: data.createdAt?.toDate(),
   };
+}
+
+export async function updatePost(id, data) {
+  await updateDoc(doc(db, 'posts', id), {
+    ...data,
+    updatedAt: serverTimestamp(),
+  });
+}
+
+export async function deletePost(id) {
+  await deleteDoc(doc(db, 'posts', id));
 }
