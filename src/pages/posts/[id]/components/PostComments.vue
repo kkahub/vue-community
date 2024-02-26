@@ -43,7 +43,6 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useQuasar } from 'quasar';
 import { useRoute } from 'vue-router';
 import { useAsyncState } from '@vueuse/core';
 import { useAuthStore } from 'src/stores/auth';
@@ -52,11 +51,17 @@ import BaseCard from 'src/components/base/BaseCard.vue';
 import CommentList from 'src/components/apps/comment/CommentList.vue';
 import { validateRequired } from 'src/utils/validate-rules';
 
-const isActive = ref(false);
-const toggleActive = () => (isActive.value = !isActive.value);
-
 const route = useRoute();
 const authStore = useAuthStore();
+
+const isActive = ref(false);
+const toggleActive = () => {
+  if (!isActive.value && !authStore.isAuthenticated) {
+    alert('로그인 후 이용 가능합니다.');
+    return;
+  }
+  isActive.value = !isActive.value;
+};
 
 const { state: comments, execute: executeGetComments } = useAsyncState(
   () => getComments(route.params.id),

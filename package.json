@@ -20,6 +20,7 @@
     "@tiptap/pm": "^2.2.3",
     "@tiptap/starter-kit": "^2.2.3",
     "@tiptap/vue-3": "^2.2.3",
+    "@vueuse/components": "^10.8.0",
     "@vueuse/core": "^10.7.2",
     "axios": "^1.6.7",
     "firebase": "^10.8.0",

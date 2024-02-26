@@ -12,24 +12,12 @@ import {
   getDoc,
   updateDoc,
   deleteDoc,
+  startAfter,
+  endBefore,
+  limit,
 } from 'firebase/firestore';
 
 export async function createPost(data) {
-  // await setDoc(
-  //   doc(db, 'posts', 'posts-id'),
-  //   {
-  //     title: 'hello world',
-  //     ...data,
-  //     readCount: 0,
-  //     likeCount: 0,
-  //     commentCount: 0,
-  //     bookmarkCount: 0,
-  //     createdAt: serverTimestamp(),
-  //   },
-  //   {
-  //     merge: true,
-  //   },
-  // );
   const docRef = await addDoc(collection(db, 'posts'), {
     ...data,
     readCount: 0,
@@ -43,24 +31,6 @@ export async function createPost(data) {
 
 export async function getPosts(params) {
   console.log('### params: ', params);
-  // 1) 컬렉션에 있는 모든 문서 조회
-
-  // const querySnapshot = await getDocs(collection(db, 'posts'));
-  // // const posts = [];
-  // // querySnapshot.forEach(docs => {
-  // //   // doc.data() is never undefined for query doc snapshots
-  // //   console.log(docs.id, ' => ', docs.data());
-  // //   posts.push(docs.data());
-  // // });
-  // const posts = querySnapshot.docs.map(docs => {
-  //   const data = docs.data();
-  //   return {
-  //     ...data,
-  //     id: docs.id,
-  //     createdAt: data.createdAt?.toDate(),
-  //   };
-  // });
-  // console.log(posts);
 
   // 1) 컬렉션에 있는 문서를 쿼리해서 조회
   const conditions = [];
@@ -73,6 +43,12 @@ export async function getPosts(params) {
   if (params?.sort) {
     conditions.push(orderBy(params.sort, 'desc'));
   }
+  if (params?.start) {
+    conditions.push(startAfter(params.start));
+  }
+  if (params?.limit) {
+    conditions.push(limit(params.limit));
+  }
 
   const q = query(collection(db, 'posts'), ...conditions);
   const querySnapshot = await getDocs(q);
@@ -84,7 +60,11 @@ export async function getPosts(params) {
       createdAt: data.createdAt?.toDate(),
     };
   });
-  return posts;
+  const latestDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+  return {
+    items: posts,
+    lastItem: latestDoc,
+  };
 }
 
 export async function getPost(id) {
@@ -111,4 +91,21 @@ export async function updatePost(id, data) {
 
 export async function deletePost(id) {
   await deleteDoc(doc(db, 'posts', id));
+}
+
+export async function addLike(uid, postId) {
+  await setDoc(doc(db, 'post_likes', `${uid}_${postId}`), {
+    uid,
+    postId,
+    createdAt: serverTimestamp(),
+  });
+}
+
+export async function removeLike(uid, postId) {
+  await deleteDoc(doc(db, 'post_likes', `${uid}_${postId}`));
+}
+
+export async function hasLike(uid, postId) {
+  const docSnap = await getDoc(doc(db, 'post_likes', `${uid}_${postId}`));
+  return docSnap.exists();
 }

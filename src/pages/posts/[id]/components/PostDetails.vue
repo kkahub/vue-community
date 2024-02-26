@@ -27,7 +27,7 @@
 
       <q-space />
 
-      <q-btn icon="more_horiz" round flat>
+      <q-btn v-if="hasOwnContent(post.uid)" icon="more_horiz" round flat>
         <q-menu>
           <q-list style="min-width: 100px">
             <q-item
@@ -66,6 +66,7 @@ import { date, useQuasar } from 'quasar';
 import { useRoute, useRouter } from 'vue-router';
 import { useAsyncState } from '@vueuse/core';
 import { getPost, deletePost } from 'src/services';
+import { useAuthStore } from 'src/stores/auth';
 import PostIcon from 'src/components/apps/post/PostIcon.vue';
 import BaseCard from 'src/components/base/BaseCard.vue';
 import TiptapViewer from 'src/components/tiptap/TiptapViewer.vue';
@@ -73,6 +74,7 @@ import TiptapViewer from 'src/components/tiptap/TiptapViewer.vue';
 const route = useRoute();
 const router = useRouter();
 const $q = useQuasar();
+const { hasOwnContent } = useAuthStore();
 
 const { state: post, error } = useAsyncState(
   () => getPost(route.params.id),
