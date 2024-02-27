@@ -11,7 +11,15 @@
         @click="$router.back()"
       />
       <q-space />
-      <q-btn icon="sym_o_favorite" flat round dense color="red" size="16px" />
+      <q-btn
+        :icon="isLike ? 'favorite' : 'sym_o_favorite'"
+        flat
+        round
+        dense
+        color="red"
+        size="16px"
+        @click="toggleLike"
+      />
       <q-btn icon="sym_o_bookmark" flat round dense color="blue" size="16px" />
     </div>
     <div class="flex items-center">
@@ -53,7 +61,7 @@
     <div class="row items-center q-gutter-x-md q-mt-md justify-end">
       <PostIcon name="sym_o_visibility" :label="post.readCount" />
       <PostIcon name="sym_o_sms" :label="post.commentCount" />
-      <PostIcon name="sym_o_favorite" :label="post.likeCount" />
+      <PostIcon name="sym_o_favorite" :label="likeCount" />
       <PostIcon name="sym_o_bookmark" :label="post.bookmarkCount" />
     </div>
     <q-separator class="q-my-lg" />
@@ -62,11 +70,13 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import { date, useQuasar } from 'quasar';
 import { useRoute, useRouter } from 'vue-router';
 import { useAsyncState } from '@vueuse/core';
-import { getPost, deletePost } from 'src/services';
+import { getPostDetails, deletePost } from 'src/services';
 import { useAuthStore } from 'src/stores/auth';
+import { useLike } from 'src/composables/useLike';
 import PostIcon from 'src/components/apps/post/PostIcon.vue';
 import BaseCard from 'src/components/base/BaseCard.vue';
 import TiptapViewer from 'src/components/tiptap/TiptapViewer.vue';
@@ -76,9 +86,16 @@ const router = useRouter();
 const $q = useQuasar();
 const { hasOwnContent } = useAuthStore();
 
-const { state: post, error } = useAsyncState(
-  () => getPost(route.params.id),
+const post = ref({});
+const { error } = useAsyncState(
+  () => getPostDetails(route.params.id),
   {},
+  {
+    onSuccess: result => {
+      post.value = result.post;
+      updateLikeCount(result.post.likeCount);
+    },
+  },
 );
 
 const { execute: executeDeletePost } = useAsyncState(deletePost, null, {
@@ -94,6 +111,10 @@ const handleDeletePost = async () => {
   }
   await executeDeletePost(0, route.params.id);
 };
+
+const { isLike, likeCount, toggleLike, updateLikeCount } = useLike(
+  route.params.id,
+);
 </script>
 
 <style lang="scss" scoped></style>

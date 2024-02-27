@@ -51,10 +51,15 @@
         </div>
         <div class="col-3">
           <div class="flex flex-center">
-            <q-btn class="full-width" flat dense @click.prevent>
+            <q-btn
+              class="full-width"
+              flat
+              dense
+              @click.prevent="toggleBookmark"
+            >
               <PostIcon
-                name="sym_o_bookmark"
-                :label="item.bookmarkCount"
+                :name="isBookmark ? 'bookmark' : 'sym_o_bookmark'"
+                :label="bookmarkCount"
                 tooltip="북마크"
               />
             </q-btn>
@@ -68,7 +73,8 @@
 <script setup>
 import { formatRelativeTime } from 'src/utils/relative-time-format';
 import PostIcon from './PostIcon.vue';
-import { addLike, hasLike, removeLike } from 'src/services';
+import { useLike } from 'src/composables/useLike';
+import { useBookmark } from 'src/composables/useBookmark';
 import { useAuthStore } from 'src/stores/auth';
 import { storeToRefs } from 'pinia';
 import { ref, toRefs, watch } from 'vue';
@@ -81,9 +87,17 @@ const props = defineProps({
 });
 
 const { uid, isAuthenticated } = storeToRefs(useAuthStore());
-const { id: postId, likeCount: initialCount } = toRefs(props.item);
 
-const { isLike, likeCount, toggleLike } = useLike();
+const { isLike, likeCount, toggleLike } = useLike(props.item.id, {
+  initialCount: props.item.likeCount,
+});
+
+const { isBookmark, bookmarkCount, toggleBookmark } = useBookmark(
+  props.item.id,
+  {
+    initialCount: props.item.bookmarkCount,
+  },
+);
 </script>
 
 <style lang="scss" scoped></style>

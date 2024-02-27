@@ -52,6 +52,22 @@ Vue3 Quasar Firebase Typescript Community Project
 
   <br/><br/>
 
+### uuid
+
+[uuid](https://github.com/uuidjs/uuid)
+
+- 고유한 id를 만들어줌. 이번 프로젝트에서는 이미지 업로드 시 이미지 네임을 uuid로 만들어 업로드하는데 활용
+
+  <br/><br/>
+
+### browser-image-resizer
+
+[browser-image-resizer](https://github.com/ericnograles/browser-image-resizer)
+
+- 이미지 압축 업로드
+
+  <br/><br/>
+
 ## Customize the configuration
 
 See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
