@@ -4,8 +4,9 @@ import { useAuthStore } from 'src/stores/auth';
 import { addLike, hasLike, removeLike } from 'src/services';
 
 export const useLike = (id, options) => {
-  const { initialCount } = options || {};
+  const { initialCount = 0 } = options || {};
   const { uid, isAuthenticated } = storeToRefs(useAuthStore());
+
   const isLike = ref(false);
   const likeCount = ref(initialCount);
   const postId = ref(id);

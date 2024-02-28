@@ -20,7 +20,15 @@
         size="16px"
         @click="toggleLike"
       />
-      <q-btn icon="sym_o_bookmark" flat round dense color="blue" size="16px" />
+      <q-btn
+        :icon="isBookmark ? 'bookmark' : 'sym_o_bookmark'"
+        flat
+        round
+        dense
+        color="blue"
+        size="16px"
+        @click="toggleBookmark"
+      />
     </div>
     <div class="flex items-center">
       <q-avatar>
@@ -62,7 +70,7 @@
       <PostIcon name="sym_o_visibility" :label="post.readCount" />
       <PostIcon name="sym_o_sms" :label="post.commentCount" />
       <PostIcon name="sym_o_favorite" :label="likeCount" />
-      <PostIcon name="sym_o_bookmark" :label="post.bookmarkCount" />
+      <PostIcon name="sym_o_bookmark" :label="bookmarkCount" />
     </div>
     <q-separator class="q-my-lg" />
     <TiptapViewer v-if="post.content" :content="post.content" />
@@ -80,6 +88,7 @@ import { useLike } from 'src/composables/useLike';
 import PostIcon from 'src/components/apps/post/PostIcon.vue';
 import BaseCard from 'src/components/base/BaseCard.vue';
 import TiptapViewer from 'src/components/tiptap/TiptapViewer.vue';
+import { useBookmark } from 'src/composables/useBookmark';
 
 const route = useRoute();
 const router = useRouter();
@@ -94,6 +103,7 @@ const { error } = useAsyncState(
     onSuccess: result => {
       post.value = result.post;
       updateLikeCount(result.post.likeCount);
+      updateBookmarkCount(result.post.bookmarkCount);
     },
   },
 );
@@ -115,6 +125,9 @@ const handleDeletePost = async () => {
 const { isLike, likeCount, toggleLike, updateLikeCount } = useLike(
   route.params.id,
 );
+
+const { isBookmark, bookmarkCount, toggleBookmark, updateBookmarkCount } =
+  useBookmark(route.params.id);
 </script>
 
 <style lang="scss" scoped></style>
