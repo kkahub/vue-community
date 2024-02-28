@@ -1,17 +1,6 @@
 <template>
   <q-page padding>
     <div class="row q-col-gutter-x-lg">
-      <div id="slider">
-        <transitionGroup mode="out-in" name="fade" tag="ul">
-          <li
-            v-for="slide in max"
-            :key="slide"
-            style="border: 1px solid red; width: 100px; height: 100px"
-          >
-            SLIDE {{ slide }}
-          </li>
-        </transitionGroup>
-      </div>
       <PostLeftBar class="col-grow" v-model:category="category" />
       <section class="col-7">
         <PostHeader v-model:sort="sort" />
