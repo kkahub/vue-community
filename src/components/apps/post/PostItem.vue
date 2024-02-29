@@ -2,12 +2,14 @@
   <q-item class="bg-white q-pt-md" clickable :to="`/posts/${item.id}`">
     <q-item-section avatar top>
       <q-avatar>
-        <img src="https://cdn.quasar.dev/img/boy-avatar.png" alt="" />
+        <img :src="postUser?.photoURL" alt="" />
       </q-avatar>
     </q-item-section>
     <q-item-section>
       <div class="flex items-center">
-        <span> 닉네임 &middot;{{ formatRelativeTime(item.createdAt) }} </span>
+        <span>{{ postUser?.displayName }}</span>
+        <span class="q-mx-xs">&middot;</span>
+        <span>{{ formatRelativeTime(item.createdAt) }}</span>
         <q-chip class="q-ml-sm" dense color="primary" text-color="white">
           {{ item.category }}
         </q-chip>
@@ -18,7 +20,10 @@
           #{{ tag }}
         </span>
       </div>
-      <div class="text-grey-6 q-my-sm ellipsis-2-lines">{{ item.content }}</div>
+      <div
+        class="text-grey-6 q-my-sm ellipsis-2-lines"
+        v-html="item.content"
+      ></div>
       <div class="row items-center">
         <div class="col-3">
           <div class="flex flex-center">
@@ -78,6 +83,8 @@ import { useBookmark } from 'src/composables/useBookmark';
 import { useAuthStore } from 'src/stores/auth';
 import { storeToRefs } from 'pinia';
 import { ref, toRefs, watch } from 'vue';
+import { useAsyncState } from '@vueuse/core';
+import { getUserById } from 'src/services';
 
 const props = defineProps({
   item: {
@@ -97,6 +104,11 @@ const { isBookmark, bookmarkCount, toggleBookmark } = useBookmark(
   {
     initialCount: props.item.bookmarkCount,
   },
+);
+
+const { state: postUser } = useAsyncState(
+  () => getUserById(props.item.uid),
+  {},
 );
 </script>
 

@@ -17,7 +17,15 @@
       <q-card-section class="flex items-center q-pb-none">
         <div class="text-weight-bold">태그</div>
         <q-space />
-        <q-btn icon="refresh" size="sm" dense flat round color="grey" />
+        <q-btn
+          icon="refresh"
+          size="sm"
+          dense
+          flat
+          round
+          color="grey"
+          @click="execute"
+        />
       </q-card-section>
       <q-card-section class="q-pb-sm">
         <q-card class="q-px-sm" bordered flat square>
@@ -45,14 +53,20 @@
           </div>
         </q-card>
       </q-card-section>
-
+      <div v-if="isLoading" class="flex flex-center">loading...</div>
       <q-list padding>
-        <q-item clickable dense @click="addTag('vue.js')">
+        <q-item
+          v-for="{ name, count } in postTags"
+          :key="name"
+          clickable
+          dense
+          @click="addTag(name)"
+        >
           <q-item-section class="text-teal text-caption">
-            #vue.js
+            #{{ name }}
           </q-item-section>
           <q-item-section side class="text-teal text-caption">
-            10
+            {{ count }}
           </q-item-section>
         </q-item>
       </q-list>
@@ -64,6 +78,8 @@
 import { ref, toRef } from 'vue';
 import { useTag } from 'src/composables/useTag';
 import StickySideBar from 'src/components/StickySideBar.vue';
+import { useAsyncState } from '@vueuse/core';
+import { getTags } from 'src/services';
 
 const props = defineProps({
   tags: {
@@ -78,6 +94,8 @@ const { addTag, removeTag } = useTag({
   updateTags: tags => emit('update:tags', tags),
   maxLengthMessage: '태그는 10개 이상 등록할 수 없습니다.',
 });
+
+const { state: postTags, isLoading, execute } = useAsyncState(() => getTags());
 </script>
 
 <style lang="scss" scoped></style>
