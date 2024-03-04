@@ -7,6 +7,8 @@
         placeholder="제목"
         hide-bottom-space
         :rules="[validateRequired]"
+        counter
+        maxlength="40"
       ></q-input>
       <q-select
         outlined

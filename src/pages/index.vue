@@ -4,7 +4,8 @@
       <PostLeftBar class="col-grow" v-model:category="category" />
       <section class="col-7">
         <PostHeader v-model:sort="sort" />
-        <PostList :items="items" />
+        <PostListSkeleton v-if="isLoading" />
+        <PostList :items="items" escapeHTML />
         <!-- <q-btn
           v-if="isLoadMore"
           class="full-width q-mt-md"

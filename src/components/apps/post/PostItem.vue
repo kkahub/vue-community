@@ -20,7 +20,11 @@
           #{{ tag }}
         </span>
       </div>
+      <div v-if="escapeHTML" class="text-grey-6 q-my-sm ellipsis-2-lines">
+        {{ item.content }}
+      </div>
       <div
+        v-else
         class="text-grey-6 q-my-sm ellipsis-2-lines"
         v-html="item.content"
       ></div>
@@ -90,6 +94,10 @@ const props = defineProps({
   item: {
     type: Object,
     default: () => ({}),
+  },
+  escapeHTML: {
+    type: Boolean,
+    default: false,
   },
 });
 

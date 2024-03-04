@@ -1,0 +1,1 @@
+import{_ as e}from"./plugin-vue_export-helper.21dcd24c.js";import{o,d as t,c}from"./index.874bc42f.js";const s={},r=c("div",{class:"text-h4"},"Docs Index",-1),n=[r];function a(_,d){return o(),t("div",null,n)}var l=e(s,[["render",a]]);export{l as default};

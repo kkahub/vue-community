@@ -6,6 +6,7 @@ import {
   createWebHashHistory,
 } from 'vue-router/auto';
 import { setupLayouts } from 'virtual:generated-layouts';
+import { LoadingBar } from 'quasar';
 
 // import routes from './routes';
 
@@ -49,6 +50,14 @@ export default route(function (/* { store, ssrContext } */) {
         }),
       );
     },
+  });
+
+  Router.beforeEach(() => {
+    LoadingBar.start();
+  });
+
+  Router.afterEach(() => {
+    LoadingBar.stop();
   });
 
   return Router;

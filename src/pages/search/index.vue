@@ -27,7 +27,7 @@
           <ais-hits :transform-items="transformItems">
             <template v-slot="{ items }">
               <template v-for="item in items" :key="item.id">
-                <PostItem :item="item" />
+                <PostList :item="item" />
               </template>
             </template>
           </ais-hits>
@@ -43,7 +43,7 @@
 <script setup>
 import algoliasearch from 'algoliasearch/lite';
 import 'instantsearch.css/themes/algolia-min.css';
-import PostItem from 'src/components/apps/post/PostItem.vue';
+import PostList from 'src/components/apps/post/PostList.vue';
 
 const searchClient = algoliasearch(
   '1O9E943NQA',
@@ -68,4 +68,25 @@ const transformItems = items => {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+.ais-RefinementList-label {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  text-transform: lowercase;
+  cursor: pointer;
+}
+.ais-RefinementList-label > * {
+  display: inline-block;
+}
+.ais-RefinementList-label > .ais-RefinementList-checkbox {
+  margin-right: 6px;
+}
+.ais-RefinementList-label > .ais-RefinementList-labelText {
+  flex-grow: 1;
+}
+.ais-RefinementList-label > .ais-RefinementList-count {
+  padding: 0.01rem 0.4rem;
+  border-radius: 50%;
+}
+</style>

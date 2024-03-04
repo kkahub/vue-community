@@ -15,6 +15,7 @@ import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
 
 import TiptapEditorMenu from './TiptapEditorMenu.vue';
+import CharacterCount from '@tiptap/extension-character-count';
 
 const props = defineProps({
   modelValue: {
@@ -25,6 +26,8 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue']);
 
+const limit = ref(240);
+
 const editor = useEditor({
   content: props.modelValue,
   extensions: [
@@ -34,6 +37,9 @@ const editor = useEditor({
     }),
     Link,
     Image,
+    CharacterCount.configure({
+      limit: limit.value,
+    }),
   ],
   onUpdate: () => {
     emit('update:modelValue', editor.value.getHTML());
