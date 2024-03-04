@@ -59,6 +59,7 @@ import PostList from 'src/components/apps/post/PostList.vue';
 import PostLeftBar from './components/PostLeftBar.vue';
 import PostRightBar from './components/PostRightBar.vue';
 import PostWriteDialog from 'src/components/apps/post/PostWriteDialog.vue';
+import PostListSkeleton from 'src/components/skeletons/PostListSkeleton.vue';
 
 const { category, sort, tags } = usePostQuery();
 const authStore = useAuthStore();
@@ -74,7 +75,7 @@ const items = ref([]);
 const start = ref(null);
 const isLoadMore = ref(true);
 
-const { execute } = useAsyncState(getPosts, [], {
+const { execute, isLoading } = useAsyncState(getPosts, [], {
   immediate: false,
   throwError: true,
   onSuccess: result => {

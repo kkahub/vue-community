@@ -1,5 +1,5 @@
 <template>
-  <q-item class="q-mt-md">
+  <q-item class="q-mt-sm">
     <q-item-section side top>
       <q-avatar size="md">
         <img :src="commentUser?.photoURL" />

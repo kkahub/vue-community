@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="text-subtitle1 text-weight-bold q-mb-lg">댓글 6</div>
+    <div class="text-subtitle1 text-weight-bold q-mb-lg">
+      댓글 {{ comments.length }}
+    </div>
 
     <div v-if="isActive">
       <q-form @submit.prevent="handleAddComment">

@@ -1,1 +1,0 @@
-import{_ as t}from"./plugin-vue_export-helper.21dcd24c.js";import{g as o,o as n,d as a,j as r,q as c,a as s}from"./index.874bc42f.js";const _={};function d(l,m){const e=o("text-h4");return n(),a("div",null,[r(e,null,{default:c(()=>[s("Admin/Index")]),_:1})])}var i=t(_,[["render",d]]);export{i as default};

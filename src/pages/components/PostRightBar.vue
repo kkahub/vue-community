@@ -71,6 +71,12 @@
         </q-item>
       </q-list>
     </q-card>
+    <q-btn class="full-width q-mt-md" color="dark" unelevated to="/search">
+      <q-avatar class="q-mr-xs" size="22px">
+        <q-icon name="sym_o_search" size="20px" />
+      </q-avatar>
+      <span class="text-weight-bold">Algolia Search</span>
+    </q-btn>
   </StickySideBar>
 </template>
 

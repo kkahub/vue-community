@@ -86,7 +86,6 @@ import { useLike } from 'src/composables/useLike';
 import { useBookmark } from 'src/composables/useBookmark';
 import { useAuthStore } from 'src/stores/auth';
 import { storeToRefs } from 'pinia';
-import { ref, toRefs, watch } from 'vue';
 import { useAsyncState } from '@vueuse/core';
 import { getUserById } from 'src/services';
 
@@ -119,5 +118,3 @@ const { state: postUser } = useAsyncState(
   {},
 );
 </script>
-
-<style lang="scss" scoped></style>

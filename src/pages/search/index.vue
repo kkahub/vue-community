@@ -26,9 +26,7 @@
           <q-separator spaced />
           <ais-hits :transform-items="transformItems">
             <template v-slot="{ items }">
-              <template v-for="item in items" :key="item.id">
-                <PostList :item="item" />
-              </template>
+              <PostList :items="items" />
             </template>
           </ais-hits>
           <div class="pagination flex flex-center q-mt-md">

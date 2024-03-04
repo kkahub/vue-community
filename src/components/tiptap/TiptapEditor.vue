@@ -4,10 +4,17 @@
     <q-separator />
     <editor-content class="editor__content" :editor="editor" />
   </q-card>
+  <div class="character-count flex justify-end text-teal q-pa-sm" v-if="editor">
+    <span>
+      {{ editor.storage.characterCount.characters() }}/{{ limit }} characters
+    </span>
+    <span class="q-mx-sm">/</span>
+    <span> {{ editor.storage.characterCount.words() }} words</span>
+  </div>
 </template>
 
 <script setup>
-import { watch } from 'vue';
+import { ref, watch } from 'vue';
 import { useEditor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
