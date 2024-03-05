@@ -52,15 +52,11 @@ Vue3 Quasar Firebase Typescript Community Project
 
 - 텍스트 에디터
 
-  <br/><br/>
-
 ### uuid
 
 [uuid](https://github.com/uuidjs/uuid)
 
 - 고유한 id를 만들어줌. 이번 프로젝트에서는 이미지 업로드 시 이미지 네임을 uuid로 만들어 업로드하는데 활용
-
-  <br/><br/>
 
 ### browser-image-resizer
 
