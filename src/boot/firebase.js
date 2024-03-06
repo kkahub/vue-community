@@ -7,13 +7,13 @@ import { getStorage } from 'firebase/storage';
 import { useAuthStore } from 'src/stores/auth';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDVo5b3Q7WOpCkB-nzTIkmlz6IQeYJJyOQ',
-  authDomain: 'kka-vue3-firebase-community.firebaseapp.com',
-  projectId: 'kka-vue3-firebase-community',
-  storageBucket: 'kka-vue3-firebase-community.appspot.com',
-  messagingSenderId: '312732254609',
-  appId: '1:312732254609:web:7c586533469b5de73b9a30',
-  measurementId: 'G-NS9XVJ9PVX',
+  apiKey: process.env.API_KEY,
+  authDomain: process.env.AUTH_DOMAIN,
+  projectId: process.env.PROJECT_ID,
+  storageBucket: process.env.STORAGE_BUCKET,
+  messagingSenderId: process.env.MESSAGING_SENDER_ID,
+  appId: process.env.APP_ID,
+  measurementId: process.env.MEASUREMENT_ID,
 };
 
 // Initialize Firebase
@@ -28,7 +28,6 @@ export { auth, db, storage };
 export default boot(async () => {
   const authStore = useAuthStore();
   onAuthStateChanged(auth, user => {
-    console.log('###user: ', user);
     authStore.setUser(user);
   });
 });

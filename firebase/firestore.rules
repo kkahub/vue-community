@@ -14,7 +14,8 @@ service cloud.firestore {
     // your rules
     match /{document=**} {
       allow read;
-      allow write: if request.time < timestamp.date(2024, 3, 21);
+      // allow write: if request.time < timestamp.date(2024, 3, 21);
+      allow write: if false;
     }
     function isAuth() {
     	return request.auth != null;
@@ -30,7 +31,7 @@ service cloud.firestore {
     }
     match /posts/{postId} {
     	allow read: if true;
-      allow create: if isAuth();
+      allow create: if false;
       allow delete: if isAuthorOrAdmin(resource.data.uid);
       allow update: if allowUpdateFields(['readCount']) || isAuthorOrAdmin(resource.data.uid);
     }

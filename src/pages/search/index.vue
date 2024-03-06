@@ -44,8 +44,8 @@ import 'instantsearch.css/themes/algolia-min.css';
 import PostList from 'src/components/apps/post/PostList.vue';
 
 const searchClient = algoliasearch(
-  '1O9E943NQA',
-  'b3a05959e0ee50460665796fe9e4edd2',
+  process.env.ALGOLIA_SERACH_APP_ID,
+  process.env.ALGOLIA_SERACH_API_KEY,
 );
 
 const transformItems = items => {
