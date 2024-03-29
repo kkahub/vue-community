@@ -14,11 +14,10 @@ service cloud.firestore {
     // your rules
     match /{document=**} {
       allow read;
-      // allow write: if request.time < timestamp.date(2024, 3, 21);
-      allow write: if false;
+      allow write: if request.time < timestamp.date(2024, 3, 21);
     }
     function isAuth() {
-    	return request.auth != null;
+    	return request.auth.uid != null;
     }
     function isAuthorOrAdmin(authorDataUid) {
     	return authorDataUid == request.auth.uid || isAdmin();
