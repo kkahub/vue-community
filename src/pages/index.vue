@@ -32,20 +32,6 @@
   </q-page>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      el: '#slider',
-      data: {
-        max: 4,
-        active: 1,
-      },
-    };
-  },
-};
-</script>
-
 <script setup>
 import { computed, ref, watch } from 'vue';
 import { getPosts } from 'src/services';
