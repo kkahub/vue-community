@@ -1,5 +1,6 @@
 // The Cloud Functions for Firebase SDK to create Cloud Functions and triggers.
-const functions = require('firebase-functions');
+// auth onCreate/onDelete 트리거는 v2에 없어서 v1 사용
+const functions = require('firebase-functions/v1');
 // const { logger } = require('firebase-functions');
 const {
   onDocumentCreated,
@@ -8,20 +9,25 @@ const {
 } = require('firebase-functions/v2/firestore');
 
 // The Firebase Admin SDK to access Firestore.
-const { initializeApp, cert } = require('firebase-admin/app');
+const { initializeApp } = require('firebase-admin/app');
 const {
   getFirestore,
   FieldValue,
   Timestamp,
 } = require('firebase-admin/firestore');
-const serviceAccount = require('./serviceAccountKey.json');
 const { logger } = functions;
 
-const app = initializeApp({
-  credential: cert(serviceAccount),
-});
+// Algolia function kits
+const { onDocumentWritten } = require('firebase-functions/v2/firestore');
+const { defineSecret } = require('firebase-functions/params');
+const { algoliasearch } = require('algoliasearch');
+
+const app = initializeApp();
 const db = getFirestore(app);
 const region = 'asia-northeast3';
+
+const algoliaAppId = defineSecret('ALGOLIA_APP_ID');
+const algoliaWriteKey = defineSecret('ALGOLIA_WRITE_KEY');
 
 exports.onCreateBookmark = onDocumentCreated(
   {
@@ -184,6 +190,28 @@ exports.onUpdatePost = onDocumentUpdated(
     if (tagsToAdd) {
       updateTags(tagsToAdd);
     }
+  },
+);
+
+exports.syncPostToAlgolia = onDocumentWritten(
+  {
+    region,
+    document: 'posts/{postId}',
+    secrets: [algoliaAppId, algoliaWriteKey],
+  },
+  async event => {
+    const client = algoliasearch(algoliaAppId.value(), algoliaWriteKey.value());
+    const objectID = event.params.postId;
+    const after = event.data.after;
+    if (!after.exists) {
+      return client.deleteObject({ indexName: 'dev_posts', objectID });
+    }
+    const data = after.data();
+    // createdAt 형식은 1번에서 확인한 기존 레코드 형식에 맞출 것
+    return client.saveObject({
+      indexName: 'dev_posts',
+      body: { objectID, ...data, createdAt: data.createdAt?.toMillis() },
+    });
   },
 );
 

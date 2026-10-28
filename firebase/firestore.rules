@@ -3,36 +3,49 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // This rule allows anyone with your Firestore database reference to view, edit,
-    // and delete all data in your Firestore database. It is useful for getting
-    // started, but it is configured to expire after 30 days because it
-    // leaves your app open to attackers. At that time, all client
-    // requests to your Firestore database will be denied.
-    //
-    // Make sure to write security rules for your app before that time, or else
-    // all client requests to your Firestore database will be denied until you Update
-    // your rules
+    // 읽기는 전체 허용, 쓰기는 아래 컬렉션별 규칙으로만 허용
+    // (tags, 카운트 필드는 Cloud Functions의 Admin SDK가 쓰므로 규칙 적용 안 됨)
     match /{document=**} {
       allow read;
-      allow write: if request.time < timestamp.date(2024, 3, 21);
+      allow write: if request.time < timestamp.date(2026, 10, 28);
     }
     function isAuth() {
-    	return request.auth.uid != null;
+    	return request.auth != null;
+    }
+    function isOwner(uid) {
+    	return isAuth() && uid == request.auth.uid;
     }
     function isAuthorOrAdmin(authorDataUid) {
-    	return authorDataUid == request.auth.uid || isAdmin();
+    	return isOwner(authorDataUid) || isAdmin();
     }
     function isAdmin() {
-  		return request.auth.uid != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.rule == 'admin';
+  		return isAuth() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.rule == 'admin';
   	}
     function allowUpdateFields(fields) {
-    	return (request.response.data.diff(resource.data).affectedKeys().hasOnly(fields));
+    	return (request.resource.data.diff(resource.data).affectedKeys().hasOnly(fields));
     }
     match /posts/{postId} {
     	allow read: if true;
-      allow create: if false;
+      allow create: if isOwner(request.resource.data.uid);
       allow delete: if isAuthorOrAdmin(resource.data.uid);
       allow update: if allowUpdateFields(['readCount']) || isAuthorOrAdmin(resource.data.uid);
+
+      match /comments/{commentId} {
+        allow create: if isOwner(request.resource.data.uid);
+        allow delete: if isAuthorOrAdmin(resource.data.uid);
+      }
+    }
+    match /post_likes/{likeId} {
+      allow create: if isOwner(request.resource.data.uid);
+      allow delete: if isOwner(resource.data.uid);
+    }
+    match /users/{uid} {
+      // rule(관리자 권한) 필드를 스스로 바꾸지 못하도록 수정 필드 제한
+      allow update: if isOwner(uid) && allowUpdateFields(['displayName', 'email']);
+
+      match /bookmarks/{postId} {
+        allow create, delete: if isOwner(uid);
+      }
     }
   }
 }

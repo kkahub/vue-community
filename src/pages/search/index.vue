@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import algoliasearch from 'algoliasearch/lite';
+import { liteClient as algoliasearch } from 'algoliasearch/lite';
 import 'instantsearch.css/themes/algolia-min.css';
 import PostList from 'src/components/apps/post/PostList.vue';
 
